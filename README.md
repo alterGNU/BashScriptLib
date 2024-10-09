@@ -1,7 +1,8 @@
 # Scripts
-List of personnal script
+Collection of personnal Script Or Command
 
 ## Table of content
-| Nom du script      | Langage | Usage                             | Description                                      |
+|       Name         | Langage | Usage                             | Description                                      |
 | :---------------   |:-------:|:---------------------------------:|-------------------------------------------------:|
-| **normi_check.sh** | *Bash*  | `./normi_check.sh path/dossier/`  | Affiche a la maniere de `tree` l'arborescence du dossier passe en argument en colorant ses fichiers (blanc si pas extension .c ou .h, vert et rouge ssi .c,.h et respectivement : PASS ou FAIL la norminette |
+| **colors.sh**      | *Bash*  | `source ./colors.sh`              | Set of Variable for Syntax Coloration            |
+| **normi_check.sh** | *Bash*  | `./normi_check.sh path/dossier/`  | Apply norminette cmd and display result as `tree`|
