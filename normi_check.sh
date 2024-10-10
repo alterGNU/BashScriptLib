@@ -1,72 +1,32 @@
 #!/bin/bash
 # ==================================================================================================
-# Script lancant la forcant le plantage de mallocs.
+# Recursive fct that Check if norminette is ok while displaying result like tree cmd + colors
 # Usage:
-#   -> ./test_malloc.sh <path_to_program>
+#   -> normi_check <path/folder>
 # ==================================================================================================
 
-# =[ VARIABLES ]====================================================================================
-# -[ MISE EN PAGE ]---------------------------------------------------------------------------------
-VB="\xE2\x94\x82"                                                # Symbole separant test du resultat
-HB="\xE2\x94\x80"                                                # Symbole separant test du resultat
-VHB="\xE2\x94\x9C"                                               # Symbole separant test du resultat
-CR="\xE2\x94\x94"
-# RED COLOR
-R="\033[0;31m"                                                   # START RED
-RI="\033[3;31m"                                                  # START RED-ITALIQUE
-RU="\033[4;31m"                                                  # START RED-UNDERLINE
-RB="\033[9;31m"                                                  # START RED-BARRE
-RC="\033[6;31m"                                                  # START RED-CLIGNOTANT
-RS="\033[7;31m"                                                  # START RED-SURLIGNER
-# GREEN COLOR
-G="\033[0;32m"                                                   # START GREEN
-GI="\033[3;32m"                                                  # START GREEN-ITALIQUE
-GU="\033[4;32m"                                                  # START GREEN-UNDERLINE
-GB="\033[9;32m"                                                  # START GREEN-BARRE
-GC="\033[6;32m"                                                  # START GREEN-CLIGNOTANT
-GS="\033[7;32m"                                                  # START GREEN-SURLIGNER
-# BLUE COLOR
-B="\033[0;36m"                                                   # START BLUE
-BI="\033[3;36m"                                                  # START BLUE-ITALIQUE
-BU="\033[4;36m"                                                  # START BLUE-UNDERLINE
-BB="\033[9;36m"                                                  # START BLUE-BARRE
-# BROWN COLOR
-M="\033[0;33m"                                                   # START MARRON
-MI="\033[3;33m"                                                  # START MARRON-ITALIQUE
-MU="\033[4;33m"                                                  # START MARRON-UNDERLINE
-MB="\033[9;33m"                                                  # START MARRON-BARRE
-# GREY COLOR
-T="\033[0;37m"                                                   # START MARRON
-TI="\033[3;37m"                                                  # START MARRON-ITALIQUE
-TU="\033[4;37m"                                                  # START MARRON-UNDERLINE
-TB="\033[9;37m"                                                  # START MARRON-BARRE
-# END BALISE
-E="\033[0m"                                                      # END color balise
-# -[ FICHIERS/DOSSIERS ]----------------------------------------------------------------------------
-SCRIPTNAME=$0                                                    # Nom du script
-WORKFOLDER=${!#}                                                 # Dossier sur lequel travailler
-
-# =[ FONCTIONS SCRIPTS ]============================================================================
+# =[ STATIC/LOCAL FCTS ]============================================================================
 # -[ USAGE ]----------------------------------------------------------------------------------------
 # Affiche l'usage en incluant la phrase passe en argument.
-usage()
+usage_normi_check()
 {
-    echo -e "${RU}Mauvais usage${R}: ${1}${E}\n${GU}Usage${E}:  \`${B}${SCRIPTNAME} ${M}<dossier>${E}\`"
-    echo -e "${T}- Affiche l'arborescence du dossier passe en argument, et color ses fichiers
-    d'extension .c et .h en vert et rouge s'ils passent ou ne passent pas la norminette."
-    echo -e "${MU}Exemple${E} : "
-    echo -e "${R}\$>${E}${B}${0} ${M}./normi_check.sh ~/42/ft_printf/${T}"
+    echo -e "${R4}Error ${R0}: ${1}${E}\n${V4}Usage${E}:  \`${BC0}${0} ${M0}<folder>${E}\`"
+    echo -e "${G0}- normi_check : List contents of directories in a tree-like format with coloration:\
+        \n  ${B0}- blue means ${G0}\t\t: is a folder.\
+        \n  ${V0}- green means ${G0}\t: file passed norminette.\
+        \n  ${R0}- red means ${G0}\t\t: file failed norminette.\
+        \n  ${E}- white means ${G0}\t: norminette can't be use on this file/folder.\n"
+    echo -e "${M4}Exemple${E} : "
+    echo -e "${R0}\$>${E}${BC0}${0} ${M0}./normi_check.sh ~/42/ft_printf/${G0}"
     return 0
 }
 
-# ==================================================================================================
-# MAIN
-# ==================================================================================================
-# =[ CHECKS ARGS ]==================================================================================
-# -[ CAS PAS DE DOSSIER PASSE EN ARGUMENT ]---------------------------------------------------------
-[[ "${#}" -eq 0 ]] && { usage "Manque argument au script" && exit 2; }
-# =[ DO-IT ]========================================================================================
-normi_check() {
+# -[ NORMI_CHECK_REC() ]----------------------------------------------------------------------------
+# Recursive fct that take 2args
+#   - first one = prefixe (char * that will start each line)
+#   - second one = start directory
+normi_check_rec() 
+{
     local prefix="$1"
     local dir="$2"
     local items=("$dir"/*)
@@ -78,21 +38,21 @@ normi_check() {
 
         # Affiche l'élément
         if [ -d "$item" ]; then
-            echo -e "${prefix}└──${B}$(basename "$item")${E}"
+            echo -e "${prefix}└──${BC0}$(basename "$item")${E}"
             if [ "$is_last" = true ]; then
-                normi_check "$prefix    " "$item"
+                normi_check_rec "$prefix    " "$item"
             else
-                normi_check "$prefix│   " "$item"
+                normi_check_rec "$prefix│   " "$item"
             fi
         else
             local file_name=$(basename "${item}")
-            local color_file=${T}${file_name}${E}
+            local color_file=${G0}${file_name}${E}
             if [[ ${file_name} == *.[c,h] ]];then
                 local res_norm=$(norminette ${item} > /dev/null 2>&1 && echo 0 || echo 1)
                 if [[ ${res_norm} -eq 0 ]];then
-                    local color_file=${G}${file_name}${E}
+                    local color_file=${V0}${file_name}${E}
                 else
-                    local color_file=${R}${file_name}${E}
+                    local color_file=${R0}${file_name}${E}
                 fi
             fi
             if [ "$is_last" = true ]; then
@@ -104,6 +64,19 @@ normi_check() {
     done
 }
 
-# Point d'entrée du script
-echo -e "${B}$(basename "${WORKFOLDER}")${E}/"
-normi_check "" "${WORKFOLDER}"
+# =[ REAL FCT ]=====================================================================================
+# -[ NORMI_CHECK() ]--------------------------------------------------------------------------------
+# normi_check_rec wraper, take 1arg: path to folder/file to check
+normi_check() 
+{ 
+    if [[ -z "${1}" ]];then
+        usage_normi_check "${R0}No arg passed to ${V1}normi_check()${R0} function.${E}" 
+        exit 2;
+    fi
+    if [[ ( ! -d "${1}" ) && ( ! -f "${1}" ) ]];then
+        usage_normi_check "${R0}Arg ${M4}'${1}'${R0} is not a Folder nor a File${E}" 
+        exit 3;
+    fi
+    echo -e "${BC0}$(basename "${1}")${E}/"
+    normi_check_rec "  " "${1}" ; 
+}

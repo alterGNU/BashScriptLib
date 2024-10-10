@@ -1,18 +1,13 @@
 #!/bin/bash
  
 # ==================================================================================================
-# Ensemble de variables de coloration
+# Set Of VAR for coloration
+#   - echo -e "${N1}hello ${M5}world!${E}"
+#   W=White, N=black, R=Red, V=green, M=brown, B=Blue, BC=Blue, P=Pink, G=Grey
 # ==================================================================================================
+
 # =[ BALISE DE FIN ]================================================================================
-E="\033[0m"                                                      # END color balise
-# =[ BLANC ]========================================================================================
-W0="\033[0;29m"  # START BLANC
-W1="\033[1;29m"  # START BLANC GRAS BRILLANT
-W2="\033[2;29m"  # START BLANC GRAS
-W3="\033[3;29m"  # START BLANC GRAS ITALIQUE
-W4="\033[4;29m"  # START BLANC GRAS ITALIQUE SOULIGNE
-W5="\033[5;29m"  # START BLANC GRAS ITALIQUE SOULIGNE CLIGNOTANT
-W7="\033[7;29m"  # START BLANC GRAS ITALIQUE SOULIGNE CLIGNOTANT SURLIGNE
+E="\033[0m"      # END color balise
 # =[ NOIR ]=========================================================================================
 N0="\033[0;30m"  # START NOIR
 N1="\033[1;30m"  # START NOIR GRAS BRILLANT
@@ -53,6 +48,14 @@ B3="\033[3;34m"  # START BLEU GRAS ITALIQUE
 B4="\033[4;34m"  # START BLEU GRAS ITALIQUE SOULIGNE
 B5="\033[5;34m"  # START BLEU GRAS ITALIQUE SOULIGNE CLIGNOTANT
 B7="\033[7;34m"  # START BLEU GRAS ITALIQUE SOULIGNE CLIGNOTANT SURLIGNE
+# =[ BLEU CIEL ]====================================================================================
+BC0="\033[0;36m"  # START BLEU CIEL
+BC1="\033[1;36m"  # START BLEU CIEL GRAS BRILLANT
+BC2="\033[2;36m"  # START BLEU CIEL GRAS
+BC3="\033[3;36m"  # START BLEU CIEL GRAS ITALIQUE
+BC4="\033[4;36m"  # START BLEU CIEL GRAS ITALIQUE SOULIGNE
+BC5="\033[5;36m"  # START BLEU CIEL GRAS ITALIQUE SOULIGNE CLIGNOTANT
+BC7="\033[7;36m"  # START BLEU CIEL GRAS ITALIQUE SOULIGNE CLIGNOTANT SURLIGNE
 # =[ ROSE ]=========================================================================================
 P0="\033[0;35m"  # START ROSE
 P1="\033[1;35m"  # START ROSE GRAS BRILLANT
@@ -61,19 +64,11 @@ P3="\033[3;35m"  # START ROSE GRAS ITALIQUE
 P4="\033[4;35m"  # START ROSE GRAS ITALIQUE SOULIGNE
 P5="\033[5;35m"  # START ROSE GRAS ITALIQUE SOULIGNE CLIGNOTANT
 P7="\033[7;35m"  # START ROSE GRAS ITALIQUE SOULIGNE CLIGNOTANT SURLIGNE
- 
-# =[ TESTS ]========================================================================================
-T0="\033[0;36m"  # START BLANC
-T1="\033[1;36m"  # START BLANC GRAS BRILLANT
-T2="\033[2;36m"  # START BLANC GRAS
-T3="\033[3;36m"  # START BLANC GRAS ITALIQUE
-T4="\033[4;36m"  # START BLANC GRAS ITALIQUE SOULIGNE
-T5="\033[5;36m"  # START BLANC GRAS ITALIQUE SOULIGNE CLIGNOTANT
-T7="\033[7;36m"  # START BLANC GRAS ITALIQUE SOULIGNE CLIGNOTANT SURLIGNE
-echo -e "${T0}coucou${E}"
-echo -e "${T1}coucou${E}"
-echo -e "${T2}coucou${E}"
-echo -e "${T3}coucou${E}"
-echo -e "${T4}coucou${E}"
-echo -e "${T5}coucou${E}"
-echo -e "${T7}coucou${E}"
+# =[ GRIS ]========================================================================================
+G0="\033[0;37m"  # START GRIS
+G1="\033[1;37m"  # START GRIS GRAS BRILLANT
+G2="\033[2;37m"  # START GRIS GRAS
+G3="\033[3;37m"  # START GRIS GRAS ITALIQUE
+G4="\033[4;37m"  # START GRIS GRAS ITALIQUE SOULIGNE
+G5="\033[5;37m"  # START GRIS GRAS ITALIQUE SOULIGNE CLIGNOTANT
+G7="\033[7;37m"  # START GRIS GRAS ITALIQUE SOULIGNE CLIGNOTANT SURLIGNE
