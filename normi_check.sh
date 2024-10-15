@@ -1,6 +1,11 @@
 #!/bin/bash
 # ==================================================================================================
-# Recursive fct that Check if norminette is ok while displaying result like tree cmd + colors
+# FCTS: **normi_check** , take arg1 : <path/folder>
+# List contents of directories in a tree-like format with coloration:
+#   - blue means    : it's a folder.
+#   - green means   : file passed norminette.
+#   - red means     : file failed norminette.
+#   - white means   : norminette can't be use on this file/folder.
 # Usage:
 #   -> normi_check <path/folder>
 # ==================================================================================================

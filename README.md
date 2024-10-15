@@ -13,4 +13,4 @@ Collection of personnal Script Or Command
 | :-----------------:|:--------------------------------:|:-------------------------------------------------------------------------------------:|
 | **colors.sh**      | `source ./colors.sh`             | Set of Variable for Syntax Coloration                                                 |
 | **normi_check.sh** | `normi_check.sh <path/folder>   `| Apply norminette cmd and display result as `tree` for folder passed as arg1           |
-| **load_anim.sh**   | `source ./load_anim.sh`  | Exec cmd in backgroung, and display animation while waiting for end of exec           |
+| **load_anim.sh**   | `source ./load_anim.sh`          | Exec cmd in backgroung, and display animation while waiting for end of exec           |

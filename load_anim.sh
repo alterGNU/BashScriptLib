@@ -5,7 +5,14 @@
 # Usage:
 #   -> ./test_malloc.sh <path_to_program>
 # ==================================================================================================
-
+ 
+# ==================================================================================================
+# TODO
+# - [ ] Encapsuler les listes d'emojis pour limiter le nombre de var-env definie qd source
+# - [ ] version classic de exec_with_loading adapte a cette nouvelle fonction
+# - [ ] version qui affiche un texte, puis le loading pendant chargement then clear
+# ==================================================================================================
+ 
 # =[ VARIABLES ]====================================================================================
 # -[ LISTES ]---------------------------------------------------------------------------------------
 # EMOJIS
