@@ -17,7 +17,7 @@
 usage_normi_check()
 {
     local txt_err=${1}
-    [[ ${#} -eq 1 ]] && local int_err=42 || local int_err=${2}
+    [[ -z ${2} ]] && local int_err=42 || local int_err=${2}
     echo -e "${R4}Function:normi_check() Error:${int_err}${R0}: ${txt_err}${E}\n${V4}Usage${E}:  \`${BC0}normi_check ${M0}<path_to/folder>${E}\`"
     echo -e "${G0}- normi_check : List contents of directories in a tree-like format with coloration:\
         \n  ${B0}- blue means ${G0}\t\t: is a folder.\
