@@ -6,11 +6,11 @@ When I write scripts in bash I often use the same functions or variables (usage,
 To avoid writing them each time, I group them in a folder (**BSL**) and source them in my bash scripts.
 
 ## Usage Guide
-In order to use my BashScript Collection, first clone my repo to `<path_to_BSL_folder>` : 
-```bash
-https://github.com/alterGNU/BashScriptLib.git <path_to_BSL_folder>
-```
+In order to use these BashScript Collection, first clone the repo to `<path_to_BSL_folder>` : 
 *(dont forget to replace `<path_to_BSL_folder>` by your path to the cloned BSL folder)*
+```bash
+git clone https://github.com/alterGNU/BashScriptLib.git <path_to_BSL_folder>
+```
 
 ### Use a specifique bash script
 - To add/import/source **a specifique** bashscript from my collection to your script put these line at the top of your script 
@@ -27,16 +27,17 @@ for src_file in $(ls <path_to_BSL_folder>/src);do source <path_to_BSL_folder>/sr
 ```
 
 ## Table of content
-|       File         | Fonction Usage                        |                                 Description                                           |
-| :-----------------:|:-------------------------------------:|:-------------------------------------------------------------------------------------:|
-| **colors.sh**      | `source ./colors.sh`                  | Set of Variable for Syntax Coloration                                                 |
-| **normi_check.sh** | `normi_check.sh <path/folder>   `     | Applies norminette and display result as `tree` for folder/file 's path passed as arg1|
-| **load_anim.sh**   | `exec_anim <cmd> <anim_name>`         | Exec cmd in backgroung, and display animation while waiting for end of exec           |
+| File                | Fonction Usage                          | Description                                                                             |
+| :-----------------: | :-------------------------------------: | :-------------------------------------------------------------------------------------: |
+| **colors.sh**       | `source ./colors.sh`                    | Set of Variable for Syntax Coloration                                                   |
+| **normi_check.sh**  | `normi_check.sh <path/folder>`          | Applies norminette and display result as `tree` for folder/file 's path passed as arg1  |
+| **load_anim.sh**    | `exec_anim <cmd> <anim_name>`           | Exec cmd in backgroung, and display animation while waiting for end of exec             |
+| **print.sh**        | ``                                      | Print text                                                                              |
 
-### **colors.sh**
+### colors.sh
 - set of variables allowing syntax highlighting in the terminal .
 
-### **normi_check.sh**
+### normi_check.sh
 - `usage_normi_check()`:
     - takes 1 or 2 arguments :
         - arg1 : **mandatory argument** specific text to the encountered error (will be display in the first usage line)
@@ -64,7 +65,7 @@ for src_file in $(ls <path_to_BSL_folder>/src);do source <path_to_BSL_folder>/sr
         - if arg1 is a folder   : use `normi_check_rec()` to recursively go through the folder structure of the directory provided as an argument and then applies `normi_color` to each files encountered.
         - if arg1 is a file     : use `normi_color()` on that file
 
-### **load_anim.sh**  
+### load_anim.sh
 - In this script animations are stored into list named : **LA_<list_name>=( <speed_frame_value> 'symb1' 'symb2' ... 'symbX' )**
 
 - `usage_exec_anim()`:
@@ -89,6 +90,16 @@ for src_file in $(ls <path_to_BSL_folder>/src);do source <path_to_BSL_folder>/sr
           availlable)
     - ~global function : call by user to exec a fct in background while an animation is launch in frontground, then
       display the commands return to the terminal.
+
+### print_in_box.sh  
+- Multiples fonctions to print in boxes, all theses fun have opt. to define the box:
+  + `-t` or `--type`    : int between 0 and 3 define the box type (default simple line)
+  + `-c` or `--colors`  : str (cf COLORS dict), def. the box color (default white)
+  + `-i` or `--indent`  : int (specific to echol fun.), def. the indentation and symbol of the line inside the box
+- `print_title [-t] [-c] <text_to_print_as_title>`
+- `echol [-i] [-t] [-c] <line_to_print_in_the_box>`
+- `print_last [-t] [-c]`
+- `print_in_box [-t] [-c] <text_to_print_as_title>`
 
 ## Sources
 ### **load_anim**
