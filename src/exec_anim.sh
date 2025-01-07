@@ -16,24 +16,26 @@
  
  
 # ============================================================================================================
-# SHORT VERSION
-## -[ EXEC_ANIM() ]--------------------------------------------------------------------------------------------
+# SHORT & STANDALONE VERSION
 ## print animation in frontground while cmd exec in background the print returns.
 #exec_anim()
 #{
-#    local frames=( ▹▹▹▹▹ ▸▹▹▹▹ ▹▸▹▹▹ ▹▹▸▹▹ ▹▹▹▸▹ ▹▹▹▹▸ ▹▹▹▹▹ ▹▹▹▹▹ ▹▹▹▹▹ ▹▹▹▹▹ ▹▹▹▹▹ ▹▹▹▹▹ ▹▹▹▹▹ )
-#    local delay=0.15
-#    local cmd="${@}"
+#    [[ ( ${#} -gt 2 ) ]] && { echo -e "\033[1;31mWRONG USAGE of:\033[1;36mexec_anim()\033[1;31m, this function take 1 or 2 arguments, no more.\033[0m" && exit 3 ; }
+#    [[ ( ${#} -eq 2 ) && ( ! -f "${2}" ) ]] && { echo -e "\033[1;31mWRONG USAGE of:\033[1;36mexec_anim()\033[1;31m, the second arg must be an existing file:'${M}${2}\033[1;31m'.\033[0m" && exit 3 ; }
+#    local frames=( 🕛  🕒  🕕  🕘 )
+#    local delay=0.05
+#    local cmd="${1}"
 #    local tmpfile=$(mktemp "${TMPDIR:-/tmp}/exec_anim_${cmd%% *}_XXXXXX")
 #    trap '[[ -f "${tmpfile}" ]] && rm -f "${tmpfile}"' EXIT RETURN
-#    ${cmd} > "${tmpfile}" 2>&1 &
+#    ${1} > "${tmpfile}" 2>&1 &
 #    local pid=${!}
 #    while kill -0 ${pid} 2>/dev/null; do
-#        for frame in "${frames[@]}"; do printf "\r${frame}" && sleep ${delay} ; done
+#        for frame in "${frames[@]}"; do echo -en "${V[2]} " && printf "${frame}\r" && sleep ${delay} ; done
 #    done
 #    printf "\r" && wait ${pid}
 #    local exit_code=${?}
-#    printf "\r" && cat "${tmpfile}"
+#    printf "\r"
+#    [[ ${#} -eq 2 ]] && cat "${tmpfile}" >> "${2}" || cat "${tmpfile}"
 #    return ${exit_code}
 #}
 # ============================================================================================================
@@ -93,12 +95,12 @@ LA_bomb=( 0.25 '💣   ' ' 💣  ' '  💣 ' '   💣' '   💣' 
 usage_exec_anim()
 {
     [[ ${#} -eq 2 ]] && local int_err=${2} || local int_err=42
-    echo -e "${R4}Function Error: exec_anim(), err_${int_err}${R0}: ${1}${E}\n${V4}Usage${E}:  \`${BC0}exec_anim ${M0}<command> <anim_var>${E}\`"
-    echo -e "${G0}- exec_anim : run a fct in background while displaying an animation:\n"
-    echo -e "${M4}Exemple${E} : "
-    echo -e "${R0}\$>${E}${BC0}fct exec_anim ${M0}\"sleep 3\"${G0} :\n  run sleep in background while displaying the default animation in frontground"
-    echo -e "${R0}\$>${E}${BC0}fct exec_anim ${M0}\"sleep 3\" LA_clock${G0} :\n  run sleep in background while displaying the animation named LA_arrow in frontground"
-    echo -e "${R0}\$>${E}${BC0}fct exec_anim ${M0}\"sleep 3\" coucou${G0} :\n  return error since 'coucou' is not an animation name"
+    echo -e "\033[4;31mFunction Error: exec_anim(), err_${int_err}\033[0;31m: ${1}\033[0m\n\033[4;32mUsage\033[0m:  \`\033[0;36mexec_anim \033[0;33m<command> <anim_var>\033[0m\`"
+    echo -e "\033[0;37m- exec_anim : run a fct in background while displaying an animation:\n"
+    echo -e "\033[4;33mExemple\033[0m : "
+    echo -e "\033[0;31m\$>\033[0m\033[0;36mfct exec_anim \033[0;33m\"sleep 3\"\033[0;37m :\n  run sleep in background while displaying the default animation in frontground"
+    echo -e "\033[0;31m\$>\033[0m\033[0;36mfct exec_anim \033[0;33m\"sleep 3\" LA_clock\033[0;37m :\n  run sleep in background while displaying the animation named LA_arrow in frontground"
+    echo -e "\033[0;31m\$>\033[0m\033[0;36mfct exec_anim \033[0;33m\"sleep 3\" coucou\033[0;37m :\n  return error since 'coucou' is not an animation name"
     exit ${int_err}
 }
 
