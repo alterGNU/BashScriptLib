@@ -6,13 +6,13 @@
 #   -c or --colors  : str (cf COLORS dict), def. the box color (default white)
 #   -i or --indent  : int (specific to echol fun.), def. the indentation and symbol of the line inside the box
 # FCTS: 
-# - print_title [-t] [-c] <text_to_print_as_title>
+# - print_box_title [-t] [-c] <text_to_print_as_title>
 # - echol [-i] [-t] [-c] <line_to_print_in_the_box>
 # - print_last [-t] [-c]
 # - print_in_box [-t] [-c] <text_to_print_as_title>
 #
 # Exemples:
-#  - print_title -c r -t 2 "This is a title"
+#  - print_box_title -c r -t 2 "This is a title"
 #  - echol -c r -i 1 -t 2 "line 1"
 #  - echol -c r -i 2 -t 2 "line 2"
 #  - echol -c r -i 3 -t 2 "line 3"
@@ -33,7 +33,7 @@
  
 # =[ VARIABLES ]==============================================================================================
 # -[ LAYOUT ]-------------------------------------------------------------------------------------------------
-BOX_SIZE=50                                               # ☑ Width of the line (line size of this script stdout)
+[[ -n ${LEN} ]] && BOX_SIZE=${LEN} || BOX_SIZE=50     # ☑ Width of the line (line size of this script stdout)
 E="\033[0m"                                           # END color balise
 # -[ COLORS ]-------------------------------------------------------------------------------------------------
 # Dict key:colors name/abbrev -> value:color-balise (used by print_in_box to convert option value into color-balise)
@@ -72,8 +72,8 @@ get_len() { echo $(echo -en "${1}" | sed 's/\x1b\[[0-9;]*m//g' | wc -m) ; }
 # -[ PRINT N TIMES ]------------------------------------------------------------------------------------------
 # print $arg1 $arg2 times
 pnt() { for i in $(seq 0 $((${2})));do echo -en ${1};done ; }
-# -[ PRINT_TITLE ]--------------------------------------------------------------------------------------------
-print_title()
+# -[ PRINT_BOX_TITLE ]----------------------------------------------------------------------------------------
+print_box_title()
 {
     local color_code="white"
     local box_type="0"
@@ -174,7 +174,7 @@ echol()
     [[ ( ! "${box_type}" =~ ^[0-9]+$ ) || ( ${box_type} -lt 0 ) || ( ${box_type} -gt 3 ) ]] && { echo -e "${R}WRONG OPTION:--type='${M}${box_type}${R}' INVALID VALUE ⇒ keep default value:${U}0 for 'SIMPLE-LINE-BOX'.\033[0m" && local box_type="0" ; }
 
     local sym_list=( "✦" "➣" "⤷" )
-    local sym=${sym_list[$(((${indent} % ${#sym_list[@]})-1))]}
+    [[ ${indent} -eq 0 ]] && local sym=" " || local sym=${sym_list[$(((${indent} % ${#sym_list[@]})-1))]}
     local spaces=$(printf ' %.s' $(seq 1 ${indent}))
     local line="${C}${V[${box_type}]}\033[0m${spaces}${B}${sym}\033[0m ${text}"
     local size=$(get_len "${line}")
