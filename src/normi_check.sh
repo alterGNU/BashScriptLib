@@ -18,14 +18,14 @@ usage_normi_check()
 {
     local txt_err=${1}
     [[ -z ${2} ]] && local int_err=42 || local int_err=${2}
-    echo -e "${R4}Function:normi_check() Error:${int_err}${R0}: ${txt_err}${E}\n${V4}Usage${E}:  \`${BC0}normi_check ${M0}<path_to/folder>${E}\`"
-    echo -e "${G0}- normi_check : List contents of directories in a tree-like format with coloration:\
-        \n  ${B0}- blue means ${G0}\t\t: is a folder.\
-        \n  ${V0}- green means ${G0}\t: file passed norminette.\
-        \n  ${R0}- red means ${G0}\t\t: file failed norminette.\
-        \n  ${E}- white means ${G0}\t: norminette can't be use on this file/folder.\n"
-    echo -e "${M4}Exemple${E} : "
-    echo -e "${R0}\$>${E}${BC0}${0} ${M0}./normi_check.sh ~/42/ft_printf/${G0}"
+    echo -e "\033[4;31mFunction:normi_check() Error:${int_err}\033[0;31m: ${txt_err}\033[0m\n\033[4;32mUsage\033[0m:  \`\033[0;36mnormi_check \033[0;33m<path_to/folder>\033[0m\`"
+    echo -e "\033[0;37m- normi_check : List contents of directories in a tree-like format with coloration:\
+        \n  \033[0;34m- blue means \033[0;37m\t\t: is a folder.\
+        \n  \033[0;32m- green means \033[0;37m\t: file passed norminette.\
+        \n  \033[0;31m- red means \033[0;37m\t\t: file failed norminette.\
+        \n  \033[0m- white means \033[0;37m\t: norminette can't be use on this file/folder.\n"
+    echo -e "\033[4;33mExemple\033[0m : "
+    echo -e "\033[0;31m\$>\033[0m\033[0;36m${0} \033[0;33m./normi_check.sh ~/42/ft_printf/\033[0;37m"
     exit ${int_err}
 }
 
@@ -34,13 +34,13 @@ usage_normi_check()
 normi_color()
 {
     local file_name=$(basename "${1}")
-    local color_file=${G0}${file_name}${E}
+    local color_file="\033[0;37m${file_name}\033[0m"
     if [[ ${file_name} == *.[c,h] ]];then
         local res_norm=$(norminette ${1} > /dev/null 2>&1 && echo 0 || echo 1)
         if [[ ${res_norm} -eq 0 ]];then
-            local color_file=${V0}${file_name}${E}
+            local color_file="\033[0;32m${file_name}\033[0m"
         else
-            local color_file=${R0}${file_name}${E}
+            local color_file="\033[0;31m${file_name}\033[0m"
         fi
     fi
     echo -e ${color_file}
@@ -59,7 +59,7 @@ normi_check_rec()
         local is_last=false
         [ "$item" == "$last_item" ] && is_last=true
         if [ -d "$item" ]; then
-            echo -e "${prefix}└──${BC0}$(basename "$item")${E}"
+            echo -e "${prefix}└──\033[0;36m$(basename "$item")\033[0m"
             if [ "$is_last" = true ]; then
                 normi_check_rec "$prefix    " "$item"
             else
@@ -81,14 +81,14 @@ normi_check_rec()
 # wrap of normi_check_rec, manage cases of folder and file argument and case where norminette is not install.
 normi_check() 
 { 
-    [[ -x "$(command -v norminette)" ]] || { echo -e "${R4}ERROR 1${E}${B3}: ./norminette${G0} cmd could not be found${E}" && exit 1 ; }
-    [[ -z "${1}" ]] && usage_normi_check "${R0}No arg passed to ${V1}normi_check()${R0} function.${E}" 2
+    [[ -x "$(command -v norminette)" ]] || { echo -e "\033[4;31mERROR 1\033[0m\033[3;34m: ./norminette\033[0;37m cmd could not be found\033[0m" && exit 1 ; }
+    [[ -z "${1}" ]] && usage_normi_check "\033[0;31mNo arg passed to \033[1;32mnormi_check()\033[0;31m function.\033[0m" 2
     if [[ -d "${1}" ]];then
-        echo -e "${BC0}$(basename "${1}")${E}/"
+        echo -e "\033[0;36m$(basename "${1}")\033[0m/"
         normi_check_rec "  " "${1}"
     elif [[ -f "${1}" ]];then
         normi_color "${1}"
     else
-        usage_normi_check "${R0}Arg ${M4}'${1}'${R0} is not a Folder nor a File${E}" 3
+        usage_normi_check "\033[0;31mArg \033[4;33m'${1}'\033[0;31m is not a Folder nor a File\033[0m" 3
     fi
 }

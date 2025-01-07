@@ -15,7 +15,7 @@ git clone https://github.com/alterGNU/BashScriptLib.git <path_to_BSL_folder>
 ### Use a specifique bash script
 - To add/import/source **a specifique** bashscript from my collection to your script put these line at the top of your script 
 *(dont forget to replace <path_to_BSL_folder> and <spec_bash_script_name> by appropriate filepath and script name)*
-- 1 : `source <path_to_BSL_folder>/src/${spec_bash_script_name}`
+- 1 : `source <path_to_BSL_folder>/src/<spec_bash_script_name>`
 - 2 : to avoid multiple sourcing you can also use an **ENV_VAR** (exemple with colors.sh bashscript):
     `[[ -z "${_COLORS_SH}" ]] && source <path_to_BSL_folder>/src/colors.sh && _COLORS_SH=1`
 
