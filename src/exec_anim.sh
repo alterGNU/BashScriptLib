@@ -18,12 +18,13 @@
 # ============================================================================================================
 # SHORT & STANDALONE VERSION
 ## print animation in frontground while cmd exec in background the print returns.
+## arg2 is optionnal, and is the log file to store result in.
 #exec_anim()
 #{
 #    [[ ( ${#} -gt 2 ) ]] && { echo -e "\033[1;31mWRONG USAGE of:\033[1;36mexec_anim()\033[1;31m, this function take 1 or 2 arguments, no more.\033[0m" && exit 3 ; }
 #    [[ ( ${#} -eq 2 ) && ( ! -f "${2}" ) ]] && { echo -e "\033[1;31mWRONG USAGE of:\033[1;36mexec_anim()\033[1;31m, the second arg must be an existing file:'${M}${2}\033[1;31m'.\033[0m" && exit 3 ; }
 #    local frames=( 🕛  🕒  🕕  🕘 )
-#    local delay=0.05
+#    local delay=0.25
 #    local cmd="${1}"
 #    local tmpfile=$(mktemp "${TMPDIR:-/tmp}/exec_anim_${cmd%% *}_XXXXXX")
 #    trap '[[ -f "${tmpfile}" ]] && rm -f "${tmpfile}"' EXIT RETURN
@@ -32,9 +33,8 @@
 #    while kill -0 ${pid} 2>/dev/null; do
 #        for frame in "${frames[@]}"; do echo -en "${V[2]} " && printf "${frame}\r" && sleep ${delay} ; done
 #    done
-#    printf "\r" && wait ${pid}
+#    printf "\r\033[K" && wait ${pid}
 #    local exit_code=${?}
-#    printf "\r"
 #    [[ ${#} -eq 2 ]] && cat "${tmpfile}" >> "${2}" || cat "${tmpfile}"
 #    return ${exit_code}
 #}
@@ -105,21 +105,22 @@ usage_exec_anim()
 }
 
 # -[ LOADING_ANIMATION ]--------------------------------------------------------------------------------------
-# print animation in frontground takes 2 arguments: cmd PID and animation_list
+# print animation in frontground takes 3 arguments: cmd_name, PID, animation_list
 loading_animation()
 {
-    local pid=${1}
-    local delay=${2}
-    shift 2
+    local cmd=${1}
+    local pid=${2}
+    local delay=${3}
+    shift 3
     local frames=("${@}")
 
     while kill -0 ${pid} 2>/dev/null; do  # while process is running...
         for frame in "${frames[@]}"; do
-            printf "\r${frame}"
+            printf "${frame} \033[1;40mwaiting for cmd:${cmd}\033[0m\r"
             sleep ${delay}
         done
     done
-    printf "\r"  # clean animation
+    printf "\r\033[K"  # clean animation
 }
 
 # -[ EXEC_ANIM ]----------------------------------------------------------------------------------------------
@@ -142,10 +143,10 @@ exec_anim()
     fi
     ${cmd} >"${tmpfile}" 2>&1 &
     local pid=$!
-    loading_animation ${pid} ${anim_list[@]}
+    loading_animation "${cmd}" "${pid}" ${anim_list[@]}
     wait ${pid}
     local exit_code=${?}
-    printf "\r"
+    printf "\r\033[K"
     cat "${tmpfile}"
     return ${exit_code}
 }
