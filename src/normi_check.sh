@@ -44,36 +44,40 @@ normi_color()
         fi
     fi
     echo -e ${color_file}
+    return ${res_norm}
 }
 
 # -[ NORMI_CHECK_REC() ]----------------------------------------------------------------------------
 # basically a tree command with coloration depending on norminette returns
 normi_check_rec() 
 {
-    local prefix="$1"
-    local dir="$2"
-    local items=("$dir"/*)
+    local prefix="${1}"
+    local dir="${2}"
+    local items=("${dir}"/*)
     local last_item="${items[-1]}"
+    exit_value=0
 
     for item in "${items[@]}"; do
         local is_last=false
-        [ "$item" == "$last_item" ] && is_last=true
-        if [ -d "$item" ]; then
-            echo -e "${prefix}└──\033[0;36m$(basename "$item")\033[0m"
-            if [ "$is_last" = true ]; then
-                normi_check_rec "$prefix    " "$item"
+        [ "${item}" == "${last_item}" ] && is_last=true
+        if [ -d "${item}" ]; then
+            echo -e "${prefix}└──\033[0;36m$(basename "${item}")\033[0m"
+            if [ "${is_last}" = true ]; then
+                normi_check_rec "${prefix}    " "${item}"
             else
-                normi_check_rec "$prefix│   " "$item"
+                normi_check_rec "${prefix}│   " "${item}"
             fi
         else
             color_file=$(normi_color ${item})
-            if [ "$is_last" = true ]; then
+            exit_value=$(( exit_value + ${?} ))
+            if [ "${is_last}" = true ]; then
                 echo -e "${prefix}└──${color_file}"
             else
                 echo -e "${prefix}├──${color_file}"
             fi
         fi
     done
+    return ${exit_value}
 }
 
 # =[ REAL FCT ]=====================================================================================
@@ -83,6 +87,7 @@ normi_check()
 { 
     [[ -x "$(command -v norminette)" ]] || { echo -e "\033[4;31mERROR 1\033[0m\033[3;34m: ./norminette\033[0;37m cmd could not be found\033[0m" && exit 1 ; }
     [[ -z "${1}" ]] && usage_normi_check "\033[0;31mNo arg passed to \033[1;32mnormi_check()\033[0;31m function.\033[0m" 2
+    exit_value=0
     if [[ -d "${1}" ]];then
         echo -e "\033[0;36m$(basename "${1}")\033[0m/"
         normi_check_rec "  " "${1}"
@@ -91,4 +96,5 @@ normi_check()
     else
         usage_normi_check "\033[0;31mArg \033[4;33m'${1}'\033[0;31m is not a Folder nor a File\033[0m" 3
     fi
+    return ${?}
 }
