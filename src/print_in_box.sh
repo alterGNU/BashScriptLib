@@ -10,6 +10,7 @@
 # - echol [-i] [-t] [-c] <line_to_print_in_the_box>
 # - print_last [-t] [-c]
 # - print_in_box [-t] [-c] <text_to_print_as_title>
+# - printif line <test> <text> [<sep_symbol>, <success_symbol>, <fail_symbol>] (IF LEN NOT DEFINE:default 80)
 #
 # Exemples:
 #  - print_box_title -c r -t 2 "This is a title"
@@ -29,6 +30,10 @@
 #  ┃ coucou petite                               ┃
 #  ┃ perruche                                    ┃
 #  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+#  - printif "[ 1 -lt 2 ]" "1 < 2"
+#  1 < 2                                       ✓
+#  - printif "[ 1 -gt 2 ]" "1 > 2" "." "OK" "FAIL"
+#  1 > 2....................................FAIL
 # ============================================================================================================
  
 # =[ VARIABLES ]==============================================================================================
@@ -188,7 +193,7 @@ echol()
 }
 # -[ END_MESSAGE ]--------------------------------------------------------------------------------------------
 # Print last-arg in a box:
-# This function have -c or --color option (default none, accepte:r,red,b,blue,y,yellow,
+# This function have -c or --color option, default:none, accepte:[r,red,b,blue,y,yellow]
 print_in_box()
 {
     local color_code="white"
@@ -227,4 +232,19 @@ print_in_box()
         [[ ${BOX_SIZE} -gt $((size - 1)) ]] && echo -en "${sym}\n" || echo -en "\n"
     done
     echo -en "${C}${DLC[${box_type}]}" && pnt "${H[${box_type}]}" $((BOX_SIZE-2)) && echo -en "${DRC[${box_type}]}\033[0m\n"
+}
+# -[ PRINTIF() ]----------------------------------------------------------------------------------------------
+# print line <test> <text> [<sep_symbol>, <success_symbol>, <fail_symbol>]
+# if test succed, print line : text+(n x sep)+success_symbol else print text+(n x sep)+fail_symbol
+printif()
+{
+    [[ -n ${LEN} ]] || local LEN=80
+    local TEST="${1}"
+    local TEXT="${2}"
+    [[ -n ${3} ]] && local SEP="${3}" || local SEP="\x20"
+    [[ -n ${4} ]] && local PASS="${4}" || local PASS="\033[0;32m\u2713\033[0m"
+    [[ -n ${5} ]] && local FAIL="${5}" || local FAIL="\033[0;31m\u2717\033[0m"
+    $(eval ${TEST}) && local SYMB="${PASS}" || local SYMB="${FAIL}"
+    echo -en ${TEXT} && pnt "${SEP}" $((LEN - $(get_len "${TEXT}") - $(get_len "${SYMB}") - 6 )) && echo -en "${SYMB}\n"
+    [[ "${PASS}" == "${SYMB}" ]] && return 0 || return 1
 }
