@@ -27,50 +27,60 @@ for src_file in $(ls <path_to_BSL_folder>/src);do source <path_to_BSL_folder>/sr
 ```
 
 ## Table of content
-| File                | Fonction Usage                                | Description                                                                             |
-| :-----------------: | :-------------------------------------------: | :-------------------------------------------------------------------------------------: |
-| colors.sh           | `source ./colors.sh`                          | Set of Variable for Syntax Coloration                                                   |
-| exec_anim.sh        | `exec_anim <cmd> <anim_name>`                 | Exec cmd in backgroung, and display animation while waiting for end of exec             |
-| normi_check.sh      | `normi_check.sh <path/folder>`                | Applies norminette and display result as `tree` for folder/file 's path passed as arg1  |
-| print_in_box.sh     | `print_box_title [-t] [-c] <title>`           | Print start of the box (with <title> as the box's title)                                |
-| print_in_box.sh     | `echol [-i] [-t] [-c] <line>`                 | Print <line> in a box                                                                   |
-| print_in_box.sh     | `print_last [-t] [-c]`                        | Print end of the box                                                                    |
-| print_in_box.sh     | `print_in_box [-t] [-c] <txt1> <txt2>`        | Print <txt1> and <txt2> in box                                                          |
-| print_in_box.sh     | `printif <test> <text> [<sep>, <OK>, <fail>]` | Print <text>(<sep> x LEN)(<test>?<pass>:<fail>) in box                                  |
-| check42_makefile.sh | `check42_makefile <path/project> <projectName>` | Check if <path/project>/Makefile is conforme (rules, compilation tools used ... )       |
+| File                  | Fonction Usage                                  | Description                                                                             |
+| :-------------------: | :-------------------------------------------:   | :-------------------------------------------------------------------------------------: |
+| check42_makefile.sh   | `check42_makefile <path/project> <projectName>` | Check if <path/project>/Makefile is conforme (rules, compilation tools used ... )       |
+| check42_norminette.sh | `check42_norminette.sh <path/folder>`           | Applies norminette and display result as `tree` for folder/file 's path passed as arg1  |
+| colors.sh             | `source ./colors.sh`                            | Set of Variable for Syntax Coloration                                                   |
+| exec_anim.sh          | `exec_anim <cmd> <anim_name>`                   | Exec cmd in backgroung, and display animation while waiting for end of exec             |
+| print_in_box.sh       | `print_box_title [-t] [-c] <title>`             | Print start of the box (with <title> as the box's title)                                |
+| print_in_box.sh       | `echol [-i] [-t] [-c] <line>`                   | Print <line> in a box                                                                   |
+| print_in_box.sh       | `print_last [-t] [-c]`                          | Print end of the box                                                                    |
+| print_in_box.sh       | `print_in_box [-t] [-c] <txt1> <txt2>`          | Print <txt1> and <txt2> in box                                                          |
+| print_in_box.sh       | `printif <test> <text> [<sep>, <OK>, <fail>]`   | Print <text>(<sep> x LEN)(<test>?<pass>:<fail>) in box                                  |
 
-### colors.sh
-- set of variables allowing syntax highlighting in the terminal .
+### check42_makefile.sh
+- need print_in_box.sh sourced to work (use printif())
+- `check42_makefile <path/project> <projectName>` : Check if <path/project>/Makefile is conforme
+    - ☑ check if Makefile exist
+    - ☑ check compilation command (not gcc used and have -Wall, -Wextra & -Werror) 
+    - ☑ check make all, $(NAME) and no relink
+    - ☑ check make clean remove object.o only
+    - ☑ check make fclean remove object.o and ${2} ~ $(NAME)
+    - ☑ check make re rebuild all
 
-### normi_check.sh
-- `usage_normi_check()`:
+### check42_norminette.sh
+- `usage_check42_norminette()`:
     - takes 1 or 2 arguments :
         - arg1 : **mandatory argument** specific text to the encountered error (will be display in the first usage line)
         - arg2 : **optionnal argument** the non null error number (integer returned in terminal)
-    - ~static function : call by `normi_check()` when something goes wrong (wrong usage) then display usage with
+    - ~static function : call by `check42_norminette()` when something goes wrong (wrong usage) then display usage with
       specific text arg1 then exit with arg2
 
 - `normi_color()`:
     - takes 1 **mandatory argument <path_to/file>**
-    - ~static function : call by `normi_check_rec` and `normi_check` to applies the norminette command to the file
+    - ~static function : call by `check42_norminette_rec` and `check42_norminette` to applies the norminette command to the file
       passed as an argument and returns the results in color:
         - green : norminette ok
         - red   : norminette ko
         - white : not an extension supported by norminette
 
-- `normi_check_rec()`:
+- `check42_norminette_rec()`:
     - takes 2 arguments :
         - arg1 : **mandatory argument** prefix
         - arg2 : **mandatory argument** pathto/directory/
-    - ~static function : called in `normi_check`, will recursively go through the folder structure of the directory provided as an argument and exec `normi_color` to the files.
+    - ~static function : called in `check42_norminette`, will recursively go through the folder structure of the directory provided as an argument and exec `normi_color` to the files.
 
-- `normi_check()`:
+- `check42_norminette()`:
     - takes **1 mandatory argument** : path to dir or file to check with the norminette.
     - ~global function called by user :
-        - if arg1 is a folder   : use `normi_check_rec()` to recursively go through the folder structure of the directory provided as an argument and then applies `normi_color` to each files encountered.
+        - if arg1 is a folder   : use `check42_norminette_rec()` to recursively go through the folder structure of the directory provided as an argument and then applies `normi_color` to each files encountered.
         - if arg1 is a file     : use `normi_color()` on that file
 
-### load_anim.sh
+### colors.sh
+- set of variables allowing text highlighting in the terminal.
+
+### exec_anim.sh
 - In this script animations are stored into list named : **LA_<list_name>=( <speed_frame_value> 'symb1' 'symb2' ... 'symbX' )**
 
 - `usage_exec_anim()`:
@@ -107,17 +117,7 @@ for src_file in $(ls <path_to_BSL_folder>/src);do source <path_to_BSL_folder>/sr
 - `print_in_box [-t] [-c] <text_to_print_as_title>`
 - `printif <test> <text> [<sep>, <OK>, <fail>]`
 
-### check42_makefile.sh
-- need print_in_box.sh sourced to work (use printif())
-- `check42_makefile <path/project> <projectName>` : Check if <path/project>/Makefile is conforme
-    - ☑ check if Makefile exist
-    - ☑ check compilation command (not gcc used and have -Wall, -Wextra & -Werror) 
-    - ☑ check make all, $(NAME) and no relink
-    - ☑ check make clean remove object.o only
-    - ☑ check make fclean remove object.o and ${2} ~ $(NAME)
-    - ☑ check make re rebuild all
-
 ## Sources
-### **load_anim**
+### **exec_anim**
 - [bash_progress_bar by @pollev](https://github.com/pollev/bash_progress_bar.git)
 - [bash_loading_animations by @Silejonu](https://github.com/Silejonu/bash_loading_animations.git)
