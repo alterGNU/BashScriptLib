@@ -10,7 +10,7 @@
 # - echol [-i] [-t] [-c] <line_to_print_in_the_box>
 # - print_last [-t] [-c]
 # - print_in_box [-t] [-c] <text_to_print_as_title>
-# - printif line <test> <text> [<sep_symbol>, <success_symbol>, <fail_symbol>] (IF LEN NOT DEFINE:default 80)
+# - printif <test> <text> [<sep_symbol>, <success_symbol>, <fail_symbol>] (IF LEN NOT DEFINE:default 80)
 #
 # Exemples:
 #  - print_box_title -c r -t 2 "This is a title"

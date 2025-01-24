@@ -27,12 +27,17 @@ for src_file in $(ls <path_to_BSL_folder>/src);do source <path_to_BSL_folder>/sr
 ```
 
 ## Table of content
-| File                | Fonction Usage                          | Description                                                                             |
-| :-----------------: | :-------------------------------------: | :-------------------------------------------------------------------------------------: |
-| **colors.sh**       | `source ./colors.sh`                    | Set of Variable for Syntax Coloration                                                   |
-| **normi_check.sh**  | `normi_check.sh <path/folder>`          | Applies norminette and display result as `tree` for folder/file 's path passed as arg1  |
-| **load_anim.sh**    | `exec_anim <cmd> <anim_name>`           | Exec cmd in backgroung, and display animation while waiting for end of exec             |
-| **print.sh**        | ``                                      | Print text                                                                              |
+| File                | Fonction Usage                                | Description                                                                             |
+| :-----------------: | :-------------------------------------------: | :-------------------------------------------------------------------------------------: |
+| colors.sh           | `source ./colors.sh`                          | Set of Variable for Syntax Coloration                                                   |
+| exec_anim.sh        | `exec_anim <cmd> <anim_name>`                 | Exec cmd in backgroung, and display animation while waiting for end of exec             |
+| normi_check.sh      | `normi_check.sh <path/folder>`                | Applies norminette and display result as `tree` for folder/file 's path passed as arg1  |
+| print_in_box.sh     | `print_box_title [-t] [-c] <title>`           | Print start of the box (with <title> as the box's title)                                |
+| print_in_box.sh     | `echol [-i] [-t] [-c] <line>`                 | Print <line> in a box                                                                   |
+| print_in_box.sh     | `print_last [-t] [-c]`                        | Print end of the box                                                                    |
+| print_in_box.sh     | `print_in_box [-t] [-c] <txt1> <txt2>`        | Print <txt1> and <txt2> in box                                                          |
+| print_in_box.sh     | `printif <test> <text> [<sep>, <OK>, <fail>]` | Print <text>(<sep> x LEN)(<test>?<pass>:<fail>) in box                                  |
+| check_makefile42.sh | `check_makefile <path/project> <projectName>` | Check if <path/project>/Makefile is conforme (rules, compilation tools used ... )       |
 
 ### colors.sh
 - set of variables allowing syntax highlighting in the terminal .
@@ -100,6 +105,17 @@ for src_file in $(ls <path_to_BSL_folder>/src);do source <path_to_BSL_folder>/sr
 - `echol [-i] [-t] [-c] <line_to_print_in_the_box>`
 - `print_last [-t] [-c]`
 - `print_in_box [-t] [-c] <text_to_print_as_title>`
+- `printif <test> <text> [<sep>, <OK>, <fail>]`
+
+### check_makefile42.sh
+- need print_in_box.sh sourced to work (use printif())
+- `check_makefile <path/project> <projectName>` : Check if <path/project>/Makefile is conforme
+    - ☑ check if Makefile exist
+    - ☑ check compilation command (not gcc used and have -Wall, -Wextra & -Werror) 
+    - ☑ check make all, $(NAME) and no relink
+    - ☑ check make clean remove object.o only
+    - ☑ check make fclean remove object.o and ${2} ~ $(NAME)
+    - ☑ check make re rebuild all
 
 ## Sources
 ### **load_anim**
