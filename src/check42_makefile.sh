@@ -6,8 +6,8 @@
 #   - arg2 : <projectName> (project's name, a.k.a var./rule $(NAME) value in Makefile)
 # Usage:
 #   - check42_makefile <path/project> <projectName>
-# Dependances:
-#   - Need `source print_in_box.sh` to work (printif use)
+# Dependences:
+#   - Need `source print.sh` for printif()
 # ============================================================================================================
 
 # =[ STATIC/LOCAL FCTS ]======================================================================================
