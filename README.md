@@ -28,7 +28,8 @@ for src_file in $(ls <path_to_BSL_folder>/src);do source <path_to_BSL_folder>/sr
 
 ## Table of content
 | File                  | Fonction Usage                                  | Description                                                                             |
-| :-------------------: | :-------------------------------------------:   | :-------------------------------------------------------------------------------------: |
+| :-------------------: | :---------------------------------------------: | :-------------------------------------------------------------------------------------: |
+| check42_funused.sh    | `check42_funused <path/project> <projectName>`  | Use <path/project>/Makefile to create <projectName>, then list the function used        |
 | check42_makefile.sh   | `check42_makefile <path/project> <projectName>` | Check if <path/project>/Makefile is conforme (rules, compilation tools used ... )       |
 | check42_norminette.sh | `check42_norminette.sh <path/folder>`           | Applies norminette and display result as `tree` for folder/file 's path passed as arg1  |
 | colors.sh             | `source ./colors.sh`                            | Set of Variable for Syntax Coloration                                                   |
@@ -38,6 +39,21 @@ for src_file in $(ls <path_to_BSL_folder>/src);do source <path_to_BSL_folder>/sr
 | print_in_box.sh       | `print_last [-t] [-c]`                          | Print end of the box                                                                    |
 | print_in_box.sh       | `print_in_box [-t] [-c] <txt1> <txt2>`          | Print <txt1> and <txt2> in box                                                          |
 | print_in_box.sh       | `printif <test> <text> [<sep>, <OK>, <fail>]`   | Print <text>(<sep> x LEN)(<test>?<pass>:<fail>) in box                                  |
+
+### check42_funused.sh
+only on fun: `check42_funused` that list for each arg2..i:<object_files> create by arg1:<path/project>'s Makefile the functions used.
+- Dependencies: 
+    - Makefile with all and fclean rules
+    - `file` and `nm` commands
+
+- Takes at least 2 arguments:
+  - arg1    : <path/project>   , path to project
+  - arg2..i : <..objectfiles..>, object files (bin, .o, static_lib.a) for which to list the functions used.
+
+- Examples:
+    - `check42_funused ../ft_printf/ libftprintf.a          `: list all functions used by the static lib. libftprintf.a"
+    - `check42_funused ../Push_Swap push_swap               `: list all the functions used by the program push_swap"
+    - `check42_funused ../libft/ ft_strdup.o ft_putstr_fd.o `: list all functions used by the object file ft_strdup.o and ft_putstr.o"
 
 ### check42_makefile.sh
 - need print_in_box.sh sourced to work (use printif())
