@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
 # ============================================================================================================
-# FCTS: **check_makefile42** , takes exactly 2 arguments
+# FCTS: **check42_makefile** , takes exactly 2 arguments
 #   - arg1 : <path/project> (path to project)
 #   - arg2 : <projectName> (project's name, a.k.a var./rule $(NAME) value in Makefile)
 # Usage:
-#   - check_makefile42 <path/project> <projectName>
+#   - check42_makefile <path/project> <projectName>
 # Dependances:
 #   - Need `source print_in_box.sh` to work (printif use)
 # ============================================================================================================
@@ -13,12 +13,12 @@
 # =[ STATIC/LOCAL FCTS ]======================================================================================
 # -[ USAGE ]--------------------------------------------------------------------------------------------------
 # print usage
-usage_check_makefile42()
+usage_check42_makefile()
 {
     local txt_err=${1}
     [[ -z ${2} ]] && local int_err=42 || local int_err=${2}
-    echo -e "\033[4;31m[Error:${int_err}] Wrong usage fun:check_makefile42() \033[0;31m: ${txt_err}\033[0m\n\033[4;32mUsage\033[0m:  \`\033[0;36mcheck_makefile42 \033[0;33m<path/project> <projectName>\033[0m\`"
-    echo -e "  - \033[0;36mcheck_makefile42\033[0m  : Check if Makefile exist and is conform to 42 rules, takes exactly 2 arguments:"
+    echo -e "\033[4;31m[Error:${int_err}] Wrong usage fun:check42_makefile() \033[0;31m: ${txt_err}\033[0m\n\033[4;32mUsage\033[0m:  \`\033[0;36mcheck42_makefile \033[0;33m<path/project> <projectName>\033[0m\`"
+    echo -e "  - \033[0;36mcheck42_makefile\033[0m  : Check if Makefile exist and is conform to 42 rules, takes exactly 2 arguments:"
     echo -e "    - \033[0;33m<path/project>\033[0m  : Path to the project folder"
     echo -e "    - \033[0;33m<projectName>\033[0m   : Project's Name (used as \$(NAME) variable in Makefile)"
     echo -e "\033[4;33mExemple\033[0m : "
@@ -27,15 +27,15 @@ usage_check_makefile42()
     exit ${int_err}
 }
 
-# -[ CHECK_MAKEFILE42() ]-------------------------------------------------------------------------------------
+# -[ check42_makefile() ]-------------------------------------------------------------------------------------
 # Check that the makefile contain at least the rules  `push_swap`, `all`, `clean`, `fclean` and `re` without relink
-check_makefile42()
+check42_makefile()
 {
-    [[ ${#} -eq 2 ]] || { usage_check_makefile42 "Wrong number of argument, 2 needed but ${#} was given." "2" ; }
+    [[ ${#} -eq 2 ]] || { usage_check42_makefile "Wrong number of argument, 2 needed but ${#} was given." "2" ; }
     local folder=$(realpath ${1})
     local pname=${2}
-    [[ -d ${folder} ]] || { usage_check_makefile42 "Arg1 is not a folder" "3" ; }
-    [[ -f ${folder}/Makefile ]] || { usage_check_makefile42 "Project's Makefile not found" "4" ; }
+    [[ -d ${folder} ]] || { usage_check42_makefile "Arg1 is not a folder" "3" ; }
+    [[ -f ${folder}/Makefile ]] || { usage_check42_makefile "Project's Makefile not found" "4" ; }
 
     final=0
     # Check compile command use

@@ -37,7 +37,7 @@ for src_file in $(ls <path_to_BSL_folder>/src);do source <path_to_BSL_folder>/sr
 | print_in_box.sh     | `print_last [-t] [-c]`                        | Print end of the box                                                                    |
 | print_in_box.sh     | `print_in_box [-t] [-c] <txt1> <txt2>`        | Print <txt1> and <txt2> in box                                                          |
 | print_in_box.sh     | `printif <test> <text> [<sep>, <OK>, <fail>]` | Print <text>(<sep> x LEN)(<test>?<pass>:<fail>) in box                                  |
-| check_makefile42.sh | `check_makefile <path/project> <projectName>` | Check if <path/project>/Makefile is conforme (rules, compilation tools used ... )       |
+| check42_makefile.sh | `check42_makefile <path/project> <projectName>` | Check if <path/project>/Makefile is conforme (rules, compilation tools used ... )       |
 
 ### colors.sh
 - set of variables allowing syntax highlighting in the terminal .
@@ -107,9 +107,9 @@ for src_file in $(ls <path_to_BSL_folder>/src);do source <path_to_BSL_folder>/sr
 - `print_in_box [-t] [-c] <text_to_print_as_title>`
 - `printif <test> <text> [<sep>, <OK>, <fail>]`
 
-### check_makefile42.sh
+### check42_makefile.sh
 - need print_in_box.sh sourced to work (use printif())
-- `check_makefile <path/project> <projectName>` : Check if <path/project>/Makefile is conforme
+- `check42_makefile <path/project> <projectName>` : Check if <path/project>/Makefile is conforme
     - ☑ check if Makefile exist
     - ☑ check compilation command (not gcc used and have -Wall, -Wextra & -Werror) 
     - ☑ check make all, $(NAME) and no relink
