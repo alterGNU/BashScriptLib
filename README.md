@@ -27,32 +27,43 @@ for src_file in $(ls <path_to_BSL_folder>/src);do source <path_to_BSL_folder>/sr
 ```
 
 ## Table of content
-| File                  | Fonction Usage                                  | Description                                                                             |
-| :-------------------: | :---------------------------------------------: | :-------------------------------------------------------------------------------------: |
-| check42_funused.sh    | `check42_funused <path/project> <projectName>`  | Use <path/project>/Makefile to create <projectName>, then list the function used        |
-| check42_makefile.sh   | `check42_makefile <path/project> <projectName>` | Check if <path/project>/Makefile is conforme (rules, compilation tools used ... )       |
-| check42_norminette.sh | `check42_norminette.sh <path/folder>`           | Applies norminette and display result as `tree` for folder/file 's path passed as arg1  |
-| colors.sh             | `source ./colors.sh`                            | Set of Variable for Syntax Coloration                                                   |
-| exec_anim.sh          | `exec_anim <cmd> <anim_name>`                   | Exec cmd in backgroung, and display animation while waiting for end of exec             |
-| print.sh              | `print_box_title [-t] [-c] <title>`             | Print start of the box (with <title> as the box's title)                                |
-| print.sh              | `echol [-i] [-t] [-c] <line>`                   | Print <line> in a box                                                                   |
-| print.sh              | `print_last [-t] [-c]`                          | Print end of the box                                                                    |
-| print.sh              | `print_in_box [-t] [-c] <txt1> <txt2>`          | Print <txt1> and <txt2> in box                                                          |
-| print.sh              | `printif <test> <text> [<sep>, <OK>, <fail>]`   | Print <text>(<sep> x LEN)(<test>?<pass>:<fail>) in box                                  |
+| File                  | Fonction Usage                                               | Description                                                                             |
+| :-------------------: | :----------------------------------------------------------: | :-------------------------------------------------------------------------------------: |
+| check42_funused.sh    | `check42_lst_funused <project/> <pName>`                     | Use <path/project>/Makefile to create <projectName>, then list the function used        |
+| check42_funused.sh    | `check42_ext_funused <project/> <listof_obj> [<listof_fun>]` | Pass if all used function are in allow_list, else fail                                  |
+| check42_makefile.sh   | `check42_makefile <path/project> <projectName>`              | Check if <path/project>/Makefile is conforme (rules, compilation tools used ... )       |
+| check42_norminette.sh | `check42_norminette.sh <path/folder>`                        | Applies norminette and display result as `tree` for folder/file 's path passed as arg1  |
+| colors.sh             | `source ./colors.sh`                                         | Set of Variable for Syntax Coloration                                                   |
+| exec_anim.sh          | `exec_anim <cmd> <anim_name>`                                | Exec cmd in backgroung, and display animation while waiting for end of exec             |
+| print.sh              | `print_box_title [-t] [-c] <title>`                          | Print start of the box (with <title> as the box's title)                                |
+| print.sh              | `echol [-i] [-t] [-c] <line>`                                | Print <line> in a box                                                                   |
+| print.sh              | `print_last [-t] [-c]`                                       | Print end of the box                                                                    |
+| print.sh              | `print_in_box [-t] [-c] <txt1> <txt2>`                       | Print <txt1> and <txt2> in box                                                          |
+| print.sh              | `printif <test> <text> [<sep>, <OK>, <fail>]`                | Print <text>(<sep> x LEN)(<test>?<pass>:<fail>) in box                                  |
 
 ### check42_funused.sh
 - Dependencies: 
     - Makefile with all and fclean rules
     - `file` and `nm` commands
 - Functions: 
-    - GLOBAL:`check42_funused` that list for each arg2..i:<object_files> create by arg1:<path/project>'s Makefile the functions used.
+    - GLOBAL:`check42_lst_funused` that list for each arg2..i:<object_files> create by arg1:<path/project>'s Makefile the functions used.
         - Takes at least 2 arguments:
           - arg1    : <path/project>   , path to project
           - arg2..i : <..objectfiles..>, object files (bin, .o, static_lib.a) for which to list the functions used.
         - Examples:
-            - `check42_funused ../ft_printf/ libftprintf.a          `: list all functions used by the static lib. libftprintf.a"
-            - `check42_funused ../Push_Swap push_swap               `: list all the functions used by the program push_swap"
-            - `check42_funused ../libft/ ft_strdup.o ft_putstr_fd.o `: list all functions used by the object file ft_strdup.o and ft_putstr.o"
+            - `check42_lst_funused ../ft_printf/ libftprintf.a          `: list all functions used by the static lib. libftprintf.a"
+            - `check42_lst_funused ../Push_Swap push_swap               `: list all the functions used by the program push_swap"
+            - `check42_lst_funused ../libft/ ft_strdup.o ft_putstr_fd.o `: list all functions used by the object file ft_strdup.o and ft_putstr.o"
+    - GLOBAL:`check42_ext_funused` that print in green all allowed fun used by arg2:<listof_obj_file> if fun in arg3:<listof_allowed_fun>, else in red
+        - Takes at least 2 arguments and maximum 3 arguments:
+          - mandat arg1 : <path/project>      , path to project.
+          - mandat arg2 : <listof_object.o>   , object files (bin, .o, static_lib.a) for which to list the functions used.
+          - option arg3 : <listof_allowed_fun>, list of function allowed for the project.(format:"f1,f2,f3" or "f1;f2;f3")
+        - Examples:
+            - `check42_ext_funused ../libft/ libft.a `                                                             : print external fun. used by lib_static (green if,allow red if not) without any allowed function
+            - `check42_ext_funused ../ft_printf/ libftprintf.a "malloc,free,write,va_start,va_arg,va_copy,va_end" `: print external fun. used by lib_static (green if,allow red if not) 
+            - `check42_ext_funused ../Push_Swap push_swap "read,write,malloc,free,exit"                           `: print external fun. used by program push_swap in green if in allowed list, red else
+            - `check42_ext_funused ../libft/ "ft_strdup.o,ft_putstr_fd.o" "malloc,free,write"                     `: print external fun. used by ft_strdup.o and ft_putstr_fd.o file in green if in allowed list, red else
 
 ### check42_makefile.sh
 - Dependencies: 
