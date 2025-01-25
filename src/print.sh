@@ -179,8 +179,8 @@ echol()
     [[ ( ! "${box_type}" =~ ^[0-9]+$ ) || ( ${box_type} -lt 0 ) || ( ${box_type} -gt 3 ) ]] && { echo -e "${R}WRONG OPTION:--type='${M}${box_type}${R}' INVALID VALUE ⇒ keep default value:${U}0 for 'SIMPLE-LINE-BOX'.\033[0m" && local box_type="0" ; }
 
     local sym_list=( "✦" "➣" "⤷" )
-    [[ ${indent} -eq 0 ]] && local sym=" " || local sym=${sym_list[$(((${indent} % ${#sym_list[@]})-1))]}
-    local spaces=$(printf ' %.s' $(seq 1 ${indent}))
+    [[ ${indent} -eq 0 ]] && local sym="" || local sym=${sym_list[$(((${indent} % ${#sym_list[@]})-1))]}
+    local spaces=$(printf '%.s' $(seq 1 ${indent}))
     local line="${C}${V[${box_type}]}\033[0m${spaces}${B}${sym}\033[0m ${text}"
     local size=$(get_len "${line}")
     echo -en "${line}"
