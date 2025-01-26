@@ -88,7 +88,7 @@ check42_ext_funused()
         if [[ -f ${project}/${obj} ]];then
             if file "${project}/${obj}" | grep -qE 'relocatable|executable|shared object|ar archive';then
                 echo -e "\033[4;33m- External functions used by ${obj}:\033[m"
-                local ext_fun=$(nm -g "${project}/${obj}" | grep " U " | awk '{ print $NF }' | sort | uniq)
+                local ext_fun=$(nm -g "${project}/${obj}" | grep " U " | awk '{ print $NF }' | sort | uniq | grep -vE '^ft_')
                 for fun in ${ext_fun};do
                     if [[ "${fun}" != *"main"* ]];then
                         echo "${3}" | grep -q "\b${fun%%\@*}\b" && local col="\033[0;32m" || { final=$(( final + 1 )) && local col="\033[0;31m" ; }
