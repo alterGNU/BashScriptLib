@@ -43,8 +43,9 @@ for src_file in $(ls <path_to_BSL_folder>/src);do source <path_to_BSL_folder>/sr
 
 ### check42_funused.sh
 - Dependencies: 
-    - Makefile with all and fclean rules
-    - `file` and `nm` commands
+    - Makefile with all and fclean rules.
+    - `file` and `nm` commands.
+    - `funcheck` command install.
 - Functions: 
     - GLOBAL:`check42_lst_funused` that list for each arg2..i:<object_files> create by arg1:<path/project>'s Makefile the functions used.
         - Takes at least 2 arguments:
@@ -83,7 +84,7 @@ for src_file in $(ls <path_to_BSL_folder>/src);do source <path_to_BSL_folder>/sr
 
 ### check42_norminette.sh
 - Dependencies:
-    - NONE
+    - `norminette` command installed.
 - Functions:
     - STATIC:`usage_check42_norminette()`:
         - takes 1 or 2 arguments :
