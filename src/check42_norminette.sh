@@ -27,7 +27,18 @@ usage_check42_norminette()
     echo -e "\033[0;31m\$>\033[0m\033[0;36m${0} \033[0;33m./check42_norminette.sh ~/42/ft_printf/\033[0;37m"
     exit ${int_err}
 }
-
+# -[ IS_EXCLUDED() ]------------------------------------------------------------------------------------------
+# check if arg1 is in EXCLUDE_NORMI_FOLD
+is_excluded()
+{
+    local dir_name=$(basename "$1")
+    for excluded in "${EXCLUDE_NORMI_FOLD[@]}"; do
+        if [[ "$dir_name" == "$excluded" ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
 # -[ NORMI_COLOR() ]------------------------------------------------------------------------------------------
 # applies color-code depending on norminette return and file extension
 normi_color()
@@ -60,6 +71,10 @@ check42_norminette_rec()
         local is_last=false
         [ "${item}" == "${last_item}" ] && is_last=true
         if [ -d "${item}" ]; then
+            if is_excluded "${item}"; then
+                echo -e "${prefix}└──\033[1;70m$(basename "${item}") [EXCLUDED]\033[0m"
+                continue  # Skip this directory
+            fi
             echo -e "${prefix}└──\033[0;36m$(basename "${item}")\033[0m"
             if [ "${is_last}" = true ]; then
                 check42_norminette_rec "${prefix}    " "${item}"
