@@ -110,4 +110,3 @@ check42_norminette()
     fi
     return ${?}
 }
-check42_norminette "${1}"
