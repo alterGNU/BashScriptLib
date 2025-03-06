@@ -72,8 +72,18 @@ DRC=( "┘" "┛" "╝" "╯" )                                   # ☒ Down Rig
 
 # =[ FONCTIONS SCRIPTS ]======================================================================================
 # -[ GET_LEN ]------------------------------------------------------------------------------------------------
-# return real len
-get_len() { echo $(echo -en "${1}" | sed 's/\x1b\[[0-9;]*m//g' | wc -m) ; }
+# return real len, handle emoticon that need space after to avoid overlapping display in terminal
+get_len()
+{
+    local str=${1}
+    local LIST_EMOTIC_DOUBLE_OCT=( "☑️" "⚙️" "⚠️" )
+    local clean_str=$(echo -en "${str}" | sed 's/\x1b\[[0-9;]*m//g')
+    for emo in "${LIST_EMOTIC_DOUBLE_OCT[@]}"; do clean_str="${clean_str//${emo} /${emo}}"; done
+    local nb_emo=$(echo -n "${clean_str}" | perl -CSD -lne 'print scalar(() = /\p{Extended_Pictographic}/g)')
+    clean_str=$(echo -n "${clean_str}" | perl -CSD -pe 's/\p{Extended_Pictographic}//g')
+    local count=$(echo -n "${clean_str}" | grep -oP '\X' | wc -l)
+    echo $(( count + nb_emo ))
+}
 # -[ PRINT N TIMES ]------------------------------------------------------------------------------------------
 # print $arg1 $arg2 times
 pnt() { for i in $(seq 0 $((${2})));do echo -en ${1};done ; }

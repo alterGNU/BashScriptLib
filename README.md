@@ -108,10 +108,11 @@ for src_file in $(ls <path_to_BSL_folder>/src);do source <path_to_BSL_folder>/sr
         - ~static function : called in `check42_norminette`, will recursively go through the folder structure of the directory provided as an argument and exec `normi_color` to the files.
     
     - GLOBAL:`check42_norminette()`:
+        - Use **EXCLUDE_NORMI_FOLD** list: ignore folders name in list (handy to exclude subfolders that don't applies with 42-school-norm like correctors folders)
         - takes **1 mandatory argument** : path to dir or file to check with the norminette.
         - ~global function called by user :
-            - if arg1 is a folder   : use `check42_norminette_rec()` to recursively go through the folder structure of the directory provided as an argument and then applies `normi_color` to each files encountered.
-            - if arg1 is a file     : use `normi_color()` on that file
+            - if arg1 is a folder    : use `check42_norminette_rec()` to recursively go through the folder structure of the directory provided as an argument and then applies `normi_color` to each files encountered.
+            - if arg1 is a file      : use `normi_color()` on that file
 
 ### colors.sh
 _Notes:set of variables allowing text highlighting in the terminal._
@@ -144,13 +145,13 @@ _Notes: In this script animations are stored into list named : **LA_<list_name>=
         - ~global function : call by user to exec a fct in background while an animation is launch in frontground, then
           display the commands return to the terminal.
 
-### print_in_box.sh  
+### print.sh  
 _NOTES:Has multiples fonctions to print text inside a box, all theses fun works with opt. to define the box:
   + `-t` or `--type`    : int between 0 and 3 define the box type (default simple line)
   + `-c` or `--colors`  : str (cf COLORS dict), def. the box color (default white)
   + `-i` or `--indent`  : int (specific to echol fun.), def. the indentation and symbol of the line inside the box_
 - Dependencies:
-    - NONE
+    - use `grep` and `perl` in `get_len()`.
 - Functions:
     - GLOBAL:`print_title [-t] [-c] <text_to_print_as_title>`
     - GLOBAL:`echol [-i] [-t] [-c] <line_to_print_in_the_box>`

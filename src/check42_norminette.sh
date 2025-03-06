@@ -70,25 +70,23 @@ check42_norminette_rec()
     for item in "${items[@]}"; do
         local is_last=false
         [ "${item}" == "${last_item}" ] && is_last=true
+        color_file=$(normi_color ${item})
         if [ -d "${item}" ]; then
             if is_excluded "${item}"; then
-                echo -e "${prefix}└──\033[1;70m$(basename "${item}") [EXCLUDED]\033[0m"
+                [[ "${is_last}" = true ]] && echo -en "${prefix}└" || echo -en "${prefix}├"
+                echo -en "──\033[3;36m$(basename "${item}")\033[0m/ \033[2;37m[EXCLUDE]\033[0m\n"
                 continue  # Skip this directory
             fi
-            echo -e "${prefix}└──\033[0;36m$(basename "${item}")\033[0m"
+            [[ "${is_last}" = true ]] && echo -e "${prefix}└──\033[0;36m$(basename "${item}")\033[0m/" || echo -e "${prefix}├──\033[0;36m$(basename "${item}")\033[0m/"
             if [ "${is_last}" = true ]; then
                 check42_norminette_rec "${prefix}    " "${item}"
             else
                 check42_norminette_rec "${prefix}│   " "${item}"
             fi
         else
-            color_file=$(normi_color ${item})
             exit_value=$(( exit_value + ${?} ))
-            if [ "${is_last}" = true ]; then
-                echo -e "${prefix}└──${color_file}"
-            else
-                echo -e "${prefix}├──${color_file}"
-            fi
+            [[ "${is_last}" = true ]] && echo -en "${prefix}└" || echo -en "${prefix}├"
+            echo -en "──${color_file}\n"
         fi
     done
     return ${exit_value}
@@ -112,3 +110,4 @@ check42_norminette()
     fi
     return ${?}
 }
+check42_norminette "${1}"
