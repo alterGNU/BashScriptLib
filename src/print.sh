@@ -82,7 +82,7 @@ get_len()
     local nb_emo=$(echo -n "${clean_str}" | perl -CSD -lne 'print scalar(() = /\p{Extended_Pictographic}/g)')
     clean_str=$(echo -n "${clean_str}" | perl -CSD -pe 's/\p{Extended_Pictographic}//g')
     local count=$(echo -n "${clean_str}" | grep -oP '\X' | wc -l)
-    echo $(( count + nb_emo ))
+    echo $(( count + nb_emo + nb_emo ))
 }
 # -[ PRINT N TIMES ]------------------------------------------------------------------------------------------
 # print $arg1 $arg2 times
