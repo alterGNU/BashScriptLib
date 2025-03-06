@@ -65,12 +65,10 @@ check42_norminette_rec()
     local dir="${2}"
     local items=("${dir}"/*)
     local last_item="${items[-1]}"
-    exit_value=0
 
     for item in "${items[@]}"; do
         local is_last=false
         [ "${item}" == "${last_item}" ] && is_last=true
-        color_file=$(normi_color ${item})
         if [ -d "${item}" ]; then
             if is_excluded "${item}"; then
                 [[ "${is_last}" = true ]] && echo -en "${prefix}└" || echo -en "${prefix}├"
@@ -84,7 +82,9 @@ check42_norminette_rec()
                 check42_norminette_rec "${prefix}│   " "${item}"
             fi
         else
-            exit_value=$(( exit_value + ${?} ))
+            color_file=$(normi_color ${item})
+            local last_res=${?}
+            exit_value=$(( exit_value + last_res ))
             [[ "${is_last}" = true ]] && echo -en "${prefix}└" || echo -en "${prefix}├"
             echo -en "──${color_file}\n"
         fi
