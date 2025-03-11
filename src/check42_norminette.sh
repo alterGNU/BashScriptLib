@@ -19,10 +19,10 @@ usage_check42_norminette()
     [[ -z ${2} ]] && local int_err=42 || local int_err=${2}
     echo -e "\033[4;31mFunction:check42_norminette() Error:${int_err}\033[0;31m: ${txt_err}\033[0m\n\033[4;32mUsage\033[0m:  \`\033[0;36mcheck42_norminette \033[0;33m<path_to/folder>\033[0m\`"
     echo -e "\033[0;37m- check42_norminette : List contents of directories in a tree-like format with coloration:\
-        \n  \033[0;34m- blue means \033[0;37m\t\t: is a folder.\
-        \n  \033[0;32m- green means \033[0;37m\t: file passed norminette.\
-        \n  \033[0;31m- red means \033[0;37m\t\t: file failed norminette.\
-        \n  \033[0m- white means \033[0;37m\t: norminette can't be use on this file/folder.\n"
+        \n  \033[0;34m- blue means \033[0;37m   : is a folder.\
+        \n  \033[0;32m- green means \033[0;37m  : file passed norminette.\
+        \n  \033[0;31m- red means \033[0;37m    : file failed norminette.\
+        \n  \033[0m- white means \033[0;37m  : norminette can't be use on this file/folder.\n"
     echo -e "\033[4;33mExemple\033[0m : "
     echo -e "\033[0;31m\$>\033[0m\033[0;36m${0} \033[0;33m./check42_norminette.sh ~/42/ft_printf/\033[0;37m"
     exit ${int_err}
