@@ -76,7 +76,7 @@ DRC=( "┘" "┛" "╝" "╯" )                                   # ☒ Down Rig
 get_len()
 {
     local str=${1}
-    local LIST_EMOTIC_DOUBLE_OCT=( "☑️" "⚙️" "⚠️" )
+    local LIST_EMOTIC_DOUBLE_OCT=( "☑️" "⚙️" "⚠️" "✖️" )
     local clean_str=$(echo -en "${str}" | sed 's/\x1b\[[0-9;]*m//g')
     for emo in "${LIST_EMOTIC_DOUBLE_OCT[@]}"; do clean_str="${clean_str//${emo} /${emo}}"; done
     local nb_emo=$(echo -n "${clean_str}" | perl -CSD -lne 'print scalar(() = /\p{Extended_Pictographic}/g)')
