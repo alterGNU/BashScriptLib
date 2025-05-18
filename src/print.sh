@@ -81,7 +81,7 @@ get_len()
     for emo in "${LIST_EMOTIC_DOUBLE_OCT[@]}"; do clean_str="${clean_str//${emo} /${emo}}"; done
     local nb_emo=$(echo -n "${clean_str}" | perl -CSD -lne 'print scalar(() = /\p{Extended_Pictographic}/g)')
     clean_str=$(echo -n "${clean_str}" | perl -CSD -pe 's/\p{Extended_Pictographic}//g')
-    local count=$(echo -n "${clean_str}" | grep -oP '\X' | wc -l)
+    local count=$(echo -n "${clean_str}" | perl -CSD -lne 'print scalar(() = /\X/g)')
     echo $(( count + nb_emo + nb_emo ))
 }
 # -[ PRINT N TIMES ]------------------------------------------------------------------------------------------
